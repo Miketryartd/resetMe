@@ -11,7 +11,7 @@ import ProtectedRoute from './Middleware/ProtectedRoute.tsx'
 import Overview from './Pages/Overview.tsx'
 import UserDashboard from './Pages/UserDashboard.tsx'
 import AIDashboard from './Pages/AIDashboard.tsx'
-
+import AllReviews from "./Pages/AllReviews.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -49,6 +49,7 @@ createRoot(document.getElementById('root')!).render(
   } />
 
 
+<Route path='/Reviews' element={<AllReviews/>}></Route>
 
 <Route path='/Signup' element={<Signup/>}></Route>
 <Route path='/Signin' element={<Signin/>}></Route>
