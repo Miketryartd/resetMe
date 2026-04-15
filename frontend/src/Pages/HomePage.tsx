@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import logo from "../images/logg.png";
 import ImageCarousel from "../Components/ImageCarousel";
 import ReviewSection from "../Components/ReviewSection";
@@ -8,12 +8,30 @@ import Reviews from "../Components/Reviews";
 function HomePage() {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [displayName, setDisplayName] = useState<string | null>(() => {
+
+    const token = sessionStorage.getItem('token');
+    const email = sessionStorage.getItem('user.email');
+    if (token && email) {
+      const name = email.split('@')[0];
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    }
+    return null;
+  });
+  const nav = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user.email');
+    setDisplayName(null);
+    nav('/');
+  };
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-white [font-family:'DM_Sans',sans-serif]">
@@ -29,12 +47,32 @@ function HomePage() {
           <a href="https://github.com/Miketryartd" className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-blue-500 transition-colors duration-200">
             Github
           </a>
-          <Link to="/Signin" className="px-5 py-2.5 text-sm font-semibold text-blue-500 border border-blue-500 rounded-full hover:bg-blue-50 transition-all duration-200">
-            Sign in
-          </Link>
-          <Link to="/Signup" className="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-full shadow-md hover:-translate-y-0.5 transition-all duration-200">
-            Get Started →
-          </Link>
+
+          {displayName ? (
+            <>
+              <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-2">
+                <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                  {displayName.charAt(0)}
+                </div>
+                <span className="text-sm font-semibold text-blue-600">{displayName}</span>
+              </div>
+              <Link to="/Dashboard" className="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-full shadow-md hover:-translate-y-0.5 transition-all duration-200">
+                Dashboard →
+              </Link>
+              <button onClick={handleLogout} className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-red-500 transition-colors duration-200">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/Signin" className="px-5 py-2.5 text-sm font-semibold text-blue-500 border border-blue-500 rounded-full hover:bg-blue-50 transition-all duration-200">
+                Sign in
+              </Link>
+              <Link to="/Signup" className="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-full shadow-md hover:-translate-y-0.5 transition-all duration-200">
+                Get Started →
+              </Link>
+            </>
+          )}
         </nav>
 
         <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden flex flex-col justify-center gap-[5px] w-9 h-9 p-1" aria-label="Toggle menu">
@@ -48,10 +86,30 @@ function HomePage() {
       <div className={`fixed top-0 left-0 right-0 z-40 bg-white flex flex-col gap-2 px-8 pb-8 pt-24 shadow-xl border-b border-gray-100 transition-all duration-300 md:hidden ${menuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}`}>
         <a href="https://www.linkedin.com/in/michael-oliver-m-lea%C3%B1o-jr-42617938a/" onClick={() => setMenuOpen(false)} className="py-3.5 border-b border-gray-100 text-sm font-semibold text-gray-600">LinkedIn</a>
         <a href="https://github.com/Miketryartd" onClick={() => setMenuOpen(false)} className="py-3.5 border-b border-gray-100 text-sm font-semibold text-gray-600">Github</a>
-        <Link to="/Signin" onClick={() => setMenuOpen(false)} className="py-3.5 border-b border-gray-100 text-sm font-semibold text-blue-500">Sign in</Link>
-        <Link to="/Signup" onClick={() => setMenuOpen(false)} className="mt-3 text-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-full transition-all duration-200">
-          Get Started →
-        </Link>
+
+        {displayName ? (
+          <>
+            <div className="py-3.5 border-b border-gray-100 flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                {displayName.charAt(0)}
+              </div>
+              <span className="text-sm font-semibold text-blue-600">{displayName}</span>
+            </div>
+            <Link to="/Dashboard" onClick={() => setMenuOpen(false)} className="mt-3 text-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-full transition-all duration-200">
+              Dashboard →
+            </Link>
+            <button onClick={() => { handleLogout(); setMenuOpen(false); }} className="mt-2 text-center px-6 py-3 border border-gray-200 text-gray-500 font-semibold text-sm rounded-full transition-all duration-200">
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/Signin" onClick={() => setMenuOpen(false)} className="py-3.5 border-b border-gray-100 text-sm font-semibold text-blue-500">Sign in</Link>
+            <Link to="/Signup" onClick={() => setMenuOpen(false)} className="mt-3 text-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-full transition-all duration-200">
+              Get Started →
+            </Link>
+          </>
+        )}
       </div>
 
       {/* HERO */}
@@ -80,12 +138,20 @@ function HomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-2">
-            <Link to="/Signup" className="w-full sm:w-auto text-center px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white [font-family:'Sora',sans-serif] font-bold text-base rounded-full shadow-lg hover:-translate-y-1 transition-all duration-200">
-              Start for free →
-            </Link>
-            <Link to="/Signin" className="w-full sm:w-auto text-center px-8 py-4 bg-white border border-gray-200 hover:border-green-600 text-gray-700 hover:text-green-700 [font-family:'Sora',sans-serif] font-semibold text-base rounded-full hover:-translate-y-1 transition-all duration-200">
-              Log in
-            </Link>
+            {displayName ? (
+              <Link to="/Dashboard" className="w-full sm:w-auto text-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white [font-family:'Sora',sans-serif] font-bold text-base rounded-full shadow-lg hover:-translate-y-1 transition-all duration-200">
+                Go to Dashboard →
+              </Link>
+            ) : (
+              <>
+                <Link to="/Signup" className="w-full sm:w-auto text-center px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white [font-family:'Sora',sans-serif] font-bold text-base rounded-full shadow-lg hover:-translate-y-1 transition-all duration-200">
+                  Start for free →
+                </Link>
+                <Link to="/Signin" className="w-full sm:w-auto text-center px-8 py-4 bg-white border border-gray-200 hover:border-green-600 text-gray-700 hover:text-green-700 [font-family:'Sora',sans-serif] font-semibold text-base rounded-full hover:-translate-y-1 transition-all duration-200">
+                  Log in
+                </Link>
+              </>
+            )}
           </div>
 
           <div className="flex items-center gap-3 mt-1">
@@ -110,19 +176,13 @@ function HomePage() {
         {/* Hero dashboard mockup */}
         <div className="relative z-10 mt-14 w-full max-w-3xl mx-auto">
           <div className="rounded-2xl overflow-hidden shadow-2xl shadow-blue-500/10 border border-gray-200">
-
-     
             <div className="bg-blue-500 px-4 py-3 flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-white/30" />
               <div className="w-3 h-3 rounded-full bg-white/30" />
               <div className="w-3 h-3 rounded-full bg-white/30" />
               <span className="ml-2 text-white/60 text-xs font-medium">resetMe — Dashboard</span>
             </div>
-
-          
             <div className="bg-gray-50 flex">
-
-          
               <div className="hidden sm:flex w-44 bg-blue-500 flex-col p-4 gap-3 min-h-[320px]">
                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold mb-2">E</div>
                 <div className="bg-white/20 rounded-lg px-3 py-2 text-white text-xs font-semibold">Overview</div>
@@ -131,10 +191,7 @@ function HomePage() {
                 <div className="px-3 py-2 text-white/60 text-xs font-medium">Statistics</div>
                 <div className="mt-auto px-3 py-2 text-white/60 text-xs font-medium">Logout</div>
               </div>
-
               <div className="flex-1 p-4 flex flex-col gap-3">
-
-             
                 <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                   <div className="bg-gradient-to-r from-green-600 to-green-700 px-4 py-2.5">
                     <p className="text-white text-xs font-semibold">Add New Habit</p>
@@ -148,8 +205,6 @@ function HomePage() {
                     </div>
                   </div>
                 </div>
-
-                
                 <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                   <div className="bg-gradient-to-r from-green-600 to-green-700 px-4 py-2.5">
                     <p className="text-white text-xs font-semibold">My Habits</p>
@@ -170,12 +225,10 @@ function HomePage() {
                     ))}
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
 
-   
           <div className="hidden sm:flex absolute -left-6 top-[20%] bg-white rounded-2xl px-4 py-2.5 shadow-lg items-center gap-2 text-sm font-semibold text-green-600 whitespace-nowrap border border-green-100">
             <span className="text-base">📉</span> Lower Cortisol Levels
           </div>
@@ -188,7 +241,7 @@ function HomePage() {
         </div>
       </section>
 
-
+      {/* STATS STRIP */}
       <section className="bg-blue-500 py-10 px-6 md:px-16">
         <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {[
@@ -214,7 +267,6 @@ function HomePage() {
               Everything you need to level up
             </h2>
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {[
               { icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="icon text-green-400 icon-tabler icons-tabler-filled icon-tabler-layout-dashboard"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 3a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2v-6a2 2 0 0 1 2 -2zm0 12a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2v-2a2 2 0 0 1 2 -2zm10 -4a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2v-6a2 2 0 0 1 2 -2zm0 -8a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2v-2a2 2 0 0 1 2 -2z" /></svg>), title: "Smart Dashboard", desc: "See all your habits, streaks, and scores in one clean view. No clutter, just clarity.", color: "bg-blue-50 border-blue-200" },
@@ -225,7 +277,7 @@ function HomePage() {
               { icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="icon icon-tabler text-orange-400 icons-tabler-filled icon-tabler-shield-lock"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M11.998 2l.118 .007l.059 .008l.061 .013l.111 .034a.993 .993 0 0 1 .217 .112l.104 .082l.255 .218a11 11 0 0 0 7.189 2.537l.342 -.01a1 1 0 0 1 1.005 .717a13 13 0 0 1 -9.208 16.25a1 1 0 0 1 -.502 0a13 13 0 0 1 -9.209 -16.25a1 1 0 0 1 1.005 -.717a11 11 0 0 0 7.531 -2.527l.263 -.225l.096 -.075a.993 .993 0 0 1 .217 -.112l.112 -.034a.97 .97 0 0 1 .119 -.021l.115 -.007zm.002 7a2 2 0 0 0 -1.995 1.85l-.005 .15l.005 .15a2 2 0 0 0 .995 1.581v1.769l.007 .117a1 1 0 0 0 1.993 -.117l.001 -1.768a2 2 0 0 0 -1.001 -3.732z" /></svg>), title: "Secure & Private", desc: "Your data stays yours. End-to-end encrypted, never sold, never shared with anyone.", color: "bg-blue-50 border-blue-200" },
             ].map(({ icon, title, desc, color }) => (
               <div key={title} className={`${color} border rounded-2xl p-6`}>
-                <div className="text-3xl mb-3">{icon}</div>
+                <div className="mb-3">{icon}</div>
                 <h3 className="[font-family:'Sora',sans-serif] text-base font-bold text-gray-900 mb-2">{title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
