@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Sidebar from "../Components/Sidebar";
 import logo from "../images/logg.png";
-import type { Stats, UserPrompt } from "../Utils/Interface";
+import type { Stats, UserPrompt } from "../Types/Interface";
 import AIFetch from "../Components/AIFetch";
 
 function AIDashboard() {
@@ -11,8 +11,8 @@ function AIDashboard() {
   const [prompt, setPrompt] = useState<string>("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [aiPanelOpen, setAiPanelOpen] = useState(false);
-
   const [selectedPrompt, setSelectedPrompt] = useState<UserPrompt | null>(null);
+  const [deleting, setDeleting] = useState<boolean>(false);
 
   const handlePrompt = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +38,49 @@ function AIDashboard() {
     }
   };
 
+  const handleDeletePrompt = async (promptId: string) => {
+    if (!confirm("Are you sure you want to delete this conversation? This action cannot be undone.")) {
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        alert("User is not logged in");
+        return;
+      }
+
+      const response = await fetch(`http://localhost:3000/api/user/me/get/ai/prompt/${promptId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete prompt");
+      }
+
+      const result = await response.json();
+      alert(result.message || "Conversation deleted successfully!");
+      
+   
+      setSelectedPrompt(null);
+      
+      
+      window.dispatchEvent(new Event('promptDeleted'));
+      
+    } catch (error) {
+      console.error("Error deleting prompt:", error);
+      alert("Failed to delete conversation. Please try again.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const showCenteredInput = !insight && !loading;
 
   return (
@@ -51,7 +94,7 @@ function AIDashboard() {
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* AI Panel Toggle Button - Mobile Only */}
+  
       <button
         onClick={() => setAiPanelOpen(true)}
         className="lg:hidden fixed right-4 bottom-20 z-20 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-3 rounded-full shadow-lg cursor-pointer hover:shadow-xl transition-all duration-300"
@@ -62,7 +105,7 @@ function AIDashboard() {
         </svg>
       </button>
 
-      {/* AI Panel Overlay - Mobile */}
+    
       {aiPanelOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
@@ -208,11 +251,11 @@ function AIDashboard() {
         />
       </div>
 
-      {/* ✅ MODAL  */}
+   
       {selectedPrompt && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-center justify-center p-3 sm:p-4"
-          onClick={() => setSelectedPrompt(null)}
+          onClick={() => !deleting && setSelectedPrompt(null)}
         >
           <div
             className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-xl mx-2 sm:mx-4"
@@ -220,14 +263,22 @@ function AIDashboard() {
           >
             <div className="bg-gray-100 px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
               <h3 className="text-black text-base sm:text-lg font-semibold">Conversation Details</h3>
-         
+              <button
+                onClick={() => setSelectedPrompt(null)}
+                className="text-gray-500 hover:text-gray-700 transition-colors"
+                disabled={deleting}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
 
             <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-              {/* Question */}
+           
               <div className="mb-4 sm:mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                  <span className="text-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-bubble-text"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12.4 2l.253 .005a6.34 6.34 0 0 1 5.235 3.166l.089 .163l.178 .039a6.33 6.33 0 0 1 4.254 3.406l.105 .228a6.334 6.334 0 0 1 -5.74 8.865l-.144 -.002l-.037 .052a5.26 5.26 0 0 1 -5.458 1.926l-.186 -.051l-3.435 2.06a1 1 0 0 1 -1.508 -.743l-.006 -.114v-2.435l-.055 -.026a3.67 3.67 0 0 1 -1.554 -1.498l-.102 -.199a3.67 3.67 0 0 1 -.312 -2.14l.038 -.21l-.116 -.092a5.8 5.8 0 0 1 -1.887 -6.025l.071 -.238a5.8 5.8 0 0 1 5.42 -4.004h.157l.15 -.165a6.33 6.33 0 0 1 4.33 -1.963zm1.6 11h-5a1 1 0 0 0 0 2h5a1 1 0 0 0 0 -2m3 -4h-10a1 1 0 1 0 0 2h10a1 1 0 0 0 0 -2" /></svg></span> Your Question
+                  <span className="text-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="icon icon-tabler icons-tabler-filled icon-tabler-bubble-text"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12.4 2l.253 .005a6.34 6.34 0 0 1 5.235 3.166l.089 .163l.178 .039a6.33 6.33 0 0 1 4.254 3.406l.105 .228a6.334 6.334 0 0 1 -5.74 8.865l-.144 -.002l-.037 .052a5.26 5.26 0 0 1 -5.458 1.926l-.186 -.051l-3.435 2.06a1 1 0 0 1 -1.508 -.743l-.006 -.114v-2.435l-.055 -.026a3.67 3.67 0 0 1 -1.554 -1.498l-.102 -.199a3.67 3.67 0 0 1 -.312 -2.14l.038 -.21l-.116 -.092a5.8 5.8 0 0 1 -1.887 -6.025l.071 -.238a5.8 5.8 0 0 1 5.42 -4.004h.157l.15 -.165a6.33 6.33 0 0 1 4.33 -1.963zm1.6 11h-5a1 1 0 0 0 0 2h5a1 1 0 0 0 0 -2m3 -4h-10a1 1 0 1 0 0 2h10a1 1 0 0 0 0 -2" /></svg></span> Your Question
                 </label>
                 <div className="bg-blue-50 rounded-lg p-3 sm:p-4 text-gray-800 border border-blue-100 text-sm sm:text-base">
                   {selectedPrompt.prompt_text || "No question provided"}
@@ -235,9 +286,10 @@ function AIDashboard() {
               </div>
 
               {/* AI Response */}
-              <div className="mb-4 sm:mb-6 bg-gray-100">
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-                  <span className="text-lg"><img className="h-20 object-cover rounded-full w-30" src={logo}></img></span> <span className="">Michael's Response</span>
+              <div className="mb-4 sm:mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <img className="h-8 w-8 object-cover rounded-full" src={logo} alt="Logo" />
+                  <span>Michael's Response</span>
                 </label>
                 <div className="bg-gray-50 rounded-lg p-3 sm:p-4 text-gray-800 whitespace-pre-wrap border border-gray-200 text-sm sm:text-base">
                   {selectedPrompt.ai_response || "No response available"}
@@ -250,7 +302,7 @@ function AIDashboard() {
                   <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                     <span className="text-lg">📊</span> Stats at that time
                   </label>
-                  <div className="grid grid-cols-2 gap-3 p-3 sm:p-5">
+                  <div className="grid grid-cols-2 gap-3">
                     <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-2 sm:p-3">
                       <p className="text-xs text-blue-600 font-medium">Total Habits</p>
                       <p className="text-xl sm:text-2xl font-bold text-blue-700">{selectedPrompt.stats_snapshot[0].totalHabits}</p>
@@ -292,10 +344,33 @@ function AIDashboard() {
               </div>
             </div>
 
-            <div className="border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex justify-end">
+            <div className="border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center gap-3">
+            <button
+  onClick={() => selectedPrompt._id && handleDeletePrompt(selectedPrompt._id)}
+  disabled={deleting || !selectedPrompt._id}
+  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm sm:text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+>
+                {deleting ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Delete Conversation
+                  </>
+                )}
+              </button>
               <button
                 onClick={() => setSelectedPrompt(null)}
-                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors text-sm sm:text-base cursor-pointer"
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors text-sm sm:text-base cursor-pointer"
+                disabled={deleting}
               >
                 Close
               </button>
