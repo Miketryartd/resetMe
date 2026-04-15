@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
+import logo from "../images/logg.png";
 import type { ReviewProps } from "../Types/Interface";
 
 function formatDate(dateStr: string) {
@@ -18,6 +19,22 @@ const avatarColors = [
   "bg-green-500", "bg-blue-600", "bg-green-700",
 ];
 
+
+const getUserDisplayName = (review: ReviewProps) => {
+  if (review.user && typeof review.user === 'object') {
+  
+    return review.user.name || review.user.username || review.user.email || "Anonymous";
+  }
+  
+  return "Community Member";
+};
+
+const getUserInitial = (review: ReviewProps) => {
+  const displayName = getUserDisplayName(review);
+  if (displayName === "Community Member") return "👤";
+  return displayName.charAt(0).toUpperCase();
+};
+
 function AllReviews() {
   const [reviews, setReviews] = useState<ReviewProps[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -33,6 +50,7 @@ function AllReviews() {
         });
         if (!res.ok) throw new Error("Failed to fetch reviews");
         const data = await res.json();
+        console.log("Fetched reviews:", data); 
         setReviews(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Error fetching all reviews", err);
@@ -48,15 +66,15 @@ function AllReviews() {
     <div className="min-h-screen bg-gray-50 [font-family:'DM_Sans',sans-serif]">
 
       {/* NAVBAR */}
-      <header className="bg-blue-500 px-6 md:px-16 py-4 flex items-center justify-between">
-        <Link to="/" className="[font-family:'Sora',sans-serif] font-black text-2xl text-white">
-          reset<span className="text-green-300">Me</span>
+      <header className="bg-white px-6 md:px-16 py-4 flex items-center justify-between">
+        <Link to='/Home'>   
+          <img className="h-12 md:h-14 w-auto object-contain" src={logo} alt="resetMe" />
         </Link>
         <div className="flex items-center gap-3">
-          <Link to="/Signin" className="text-sm font-semibold text-white/70 hover:text-white transition-colors duration-200">
+          <Link to="/Signin" className="px-5 py-2.5 text-sm font-semibold text-blue-500 border border-blue-500 rounded-full hover:bg-blue-50 transition-all duration-200">
             Sign in
           </Link>
-          <Link to="/Signup" className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-full transition-all duration-200">
+          <Link to="/Signup" className="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-full shadow-md hover:-translate-y-0.5 transition-all duration-200">
             Get Started →
           </Link>
         </div>
@@ -100,7 +118,6 @@ function AllReviews() {
           </div>
         )}
 
-
         {!loading && error && (
           <div className="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-5 py-4 max-w-md mx-auto">
             <span className="text-base">⚠️</span>
@@ -108,7 +125,6 @@ function AllReviews() {
           </div>
         )}
 
-     
         {!loading && !error && reviews.length === 0 && (
           <div className="text-center py-24">
             <div className="text-5xl mb-4">💬</div>
@@ -133,23 +149,20 @@ function AllReviews() {
                   key={review._id ?? i}
                   className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm flex flex-col gap-4 hover:shadow-md hover:border-blue-200 transition-all duration-200"
                 >
-           
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-full ${avatarColors[i % avatarColors.length]} flex items-center justify-center text-white text-sm font-bold flex-shrink-0`}>
-                      {String(i + 1).padStart(2, "0")}
+                      {getUserInitial(review)}
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-gray-900">{review.user}</p>
+                      <p className="text-sm font-bold text-gray-900">{getUserDisplayName(review)}</p>
                       <p className="text-xs text-gray-400">{formatDate(review.reviewedAt)}</p>
                     </div>
                   </div>
 
-    
                   <p className="text-sm text-gray-600 leading-relaxed flex-1">
                     "{review.review ?? "No review provided."}"
                   </p>
 
-             
                   <div className="pt-3 border-t border-gray-100">
                     <span className="text-xs font-semibold text-green-600 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">
                       Verified user
@@ -161,7 +174,6 @@ function AllReviews() {
           </>
         )}
 
-   
         {!loading && (
           <div className="mt-16 bg-blue-500 rounded-2xl p-10 text-center">
             <h3 className="[font-family:'Sora',sans-serif] text-2xl font-black text-white mb-2">
