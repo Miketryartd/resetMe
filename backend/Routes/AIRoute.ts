@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post('/ai/insight', verifyToken, getAi);
 router.get('/ai/history', verifyToken, getPromptHistory);
-router.delete('/ai/history/:promptId', verifyToken, deletePrompt);
+router.delete('/ai/prompt/:promptId', verifyToken, deletePrompt);
 
 export default router;
