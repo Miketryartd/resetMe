@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post('/review', verifyToken, createReview);
 router.get('/reviews', verifyToken, getReviews);
-router.get('/allReviews', verifyToken, getAllReviews);
+router.get('/allReviews', getAllReviews);
 
 export default router;
