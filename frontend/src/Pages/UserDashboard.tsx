@@ -4,6 +4,7 @@ import RenderedHabits from "../Components/RenderedHabits";
 import UserCalendar from "../Components/UserCalendar";
 import Sidebar from "../Components/Sidebar"; 
 import Statistics from "../Components/Statistics";
+import { API_BASE_URL } from "../Config/API";
 
 function UserDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,7 +23,7 @@ function UserDashboard() {
     try {
       const token = sessionStorage.getItem("token");
       if (!token) return alert("User is not logged in");
-      const res = await fetch(`http://localhost:3000/api/user/stat/habits`, {
+      const res = await fetch(`${API_BASE_URL}/api/user/stat/habits`, {
         method: "POST",
         headers: { "Content-type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(formData),
@@ -42,7 +43,7 @@ function UserDashboard() {
       setLoading(true);
       const token = sessionStorage.getItem("token");
       if (!token) return alert("user not logged in");
-      const res = await fetch(`http://localhost:3000/api/user/stat/me/habits`, {
+      const res = await fetch(`${API_BASE_URL}/api/user/stat/me/habits`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });
