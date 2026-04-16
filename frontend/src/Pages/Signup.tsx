@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import AuthSideBar from "../Components/AuthSideBar";
+import { API_BASE_URL } from "../Config/API";
 
 function Signup() {
   const [name, setName] = useState<string>('');
@@ -17,7 +18,7 @@ function Signup() {
     if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/api/users/create`, {
+      const res = await fetch(`${API_BASE_URL}/api/users/create`, {
         method: "POST",
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({ username: name, email, password }),
