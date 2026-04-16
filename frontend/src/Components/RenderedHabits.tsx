@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { UserStat } from "../Types/Interface";
 import { UserKept } from "../Types/Interface";
+import { API_BASE_URL } from "../Config/API";
 
 interface RenderedHabitsProps {
   habits: UserStat[];
@@ -17,7 +18,7 @@ function RenderedHabits({ habits, onRefresh }: RenderedHabitsProps) {
       const token = sessionStorage.getItem("token");
       if (!token) return alert("User is not logged in");
       const habitId = habits[index]._id;
-      const res = await fetch(`http://localhost:3000/api/user/stat/habits/progress/${habitId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/user/stat/habits/progress/${habitId}`, {
         method: "PATCH",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({ kept: value, date: new Date().toISOString().split("T")[0] })
@@ -36,7 +37,7 @@ function RenderedHabits({ habits, onRefresh }: RenderedHabitsProps) {
       const token = sessionStorage.getItem("token");
       if (!token) return alert("User is not logged in");
       const habitId = habits[index]._id;
-      const res = await fetch(`http://localhost:3000/api/user/stat/habits/notes/${habitId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/user/stat/habits/notes/${habitId}`, {
         method: "PATCH",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({ notes: value })
