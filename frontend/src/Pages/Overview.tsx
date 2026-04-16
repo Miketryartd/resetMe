@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../Components/Sidebar";
-import type {User} from "../Utils/Interface";
+import type {User} from "../Types/Interface";
 function Overview (){
 
     const [isLoading, setIsLoading] = useState<boolean>(true);

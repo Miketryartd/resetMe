@@ -6,6 +6,7 @@ import userRoutes from './Routes/UserRoute.js';
 import habitRoutes from './Routes/HabitsRoute.js';
 import reviewRoutes from './Routes/ReviewsRoute.js';
 import aiRoutes from './Routes/AIRoute.js';
+import {API_BASE_URL} from "../backend/Config/API.js";
 
 const app = express();
 app.use(express.json());

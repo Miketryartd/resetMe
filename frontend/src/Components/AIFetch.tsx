@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { UserPrompt, Stats } from "../Utils/Interface";
+import type { UserPrompt, Stats } from "../Types/Interface";
 import logo from "../images/logo.png";
 
 interface AIFetchProps {

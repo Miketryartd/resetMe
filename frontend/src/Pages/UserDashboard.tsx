@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { UserStat } from "../Utils/Interface";
+import type { UserStat } from "../Types/Interface";
 import RenderedHabits from "../Components/RenderedHabits";
 import UserCalendar from "../Components/UserCalendar";
 import Sidebar from "../Components/Sidebar"; 
@@ -101,31 +101,31 @@ function UserDashboard() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Habit Name</label>
                     <input value={formData.habit} onChange={(e) => setFormData({...formData, habit: e.target.value})}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg  outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       type="text" placeholder="e.g., Meditation" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
                     <input value={formData.category} onChange={(e) => setFormData({...formData, category: e.target.value})}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2  outline-none focus:ring-blue-500 focus:border-blue-500"
                       type="text" placeholder="e.g., Health" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
                     <input value={formData.startDate} onChange={(e) => setFormData({...formData, startDate: e.target.value})}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2  outline-none focus:ring-blue-500 focus:border-blue-500"
                       type="date" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
                     <input value={formData.endDate} onChange={(e) => setFormData({...formData, endDate: e.target.value})}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2  outline-none focus:ring-blue-500 focus:border-blue-500"
                       type="date" />
                   </div>
                   <div className="md:col-span-2 lg:col-span-4">
                     <label className="block text-sm font-medium text-gray-700 mb-2">Goal</label>
                     <input value={formData.goal} onChange={(e) => setFormData({...formData, goal: e.target.value})}
-                      type="text" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      type="text" className="w-full p-3 border border-gray-300 rounded-lg  outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g., Meditate daily for 30 days" />
                   </div>
                 </div>

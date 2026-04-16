@@ -1,5 +1,5 @@
 
-import type { StatisticsProps } from "../Utils/Interface";
+import type { StatisticsProps } from "../Types/Interface";
 
 
 function Statistics({ habits }: StatisticsProps) {

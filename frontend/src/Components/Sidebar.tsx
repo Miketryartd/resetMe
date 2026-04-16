@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
-import type { User } from "../Utils/Interface";
+import type { User } from "../Types/Interface";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -33,6 +33,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
   const navItems = [
     { path: '/Dashboard', icon: 'M4 6h16M4 12h16M4 18h16', label: 'Overview' },
     { path: '/AI-insights', icon: 'M15 5a1 1 0 1 0 2 0 1 1 0 0 0-2 0M7 5a1 1 0 1 0 2 0 1 1 0 0 0-2 0M7 19a1 1 0 1 0 2 0 1 1 0 0 0-2 0M16 12h.01M8 12h.01M16 19h.01', label: 'AI Insights' },
+    {path: '/Add-Review', icon: 'M4 6h16M4 12h16M4 18h16', label: 'Share your thoughts' }
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -47,7 +48,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
     `}>
       <div className="flex flex-col h-full">
 
-        {/* Close button — mobile only */}
+        {/* Close button — mobile  */}
         <div className="lg:hidden flex justify-end p-4">
           <button onClick={onClose} className="p-2 rounded-lg text-blue-200 hover:bg-blue-600 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

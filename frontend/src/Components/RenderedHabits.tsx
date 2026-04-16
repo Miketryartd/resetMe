@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { UserStat } from "../Utils/Interface";
-import { UserKept } from "../Utils/Interface";
+import type { UserStat } from "../Types/Interface";
+import { UserKept } from "../Types/Interface";
 
 interface RenderedHabitsProps {
   habits: UserStat[];

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import type { Review } from "../Utils/Interface";
+import type { Review } from "../Types/Interface";
 import { Link } from "react-router";
 
 function Reviews() {

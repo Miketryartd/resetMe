@@ -12,7 +12,7 @@ import Overview from './Pages/Overview.tsx'
 import UserDashboard from './Pages/UserDashboard.tsx'
 import AIDashboard from './Pages/AIDashboard.tsx'
 import AllReviews from "./Pages/AllReviews.tsx";
-
+import ActualReviewSection from './Pages/ActualReviewSection.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
@@ -47,6 +47,13 @@ createRoot(document.getElementById('root')!).render(
       <Overview />
     </ProtectedRoute>
   } />
+
+<Route path="/Add-Review" element={
+    <ProtectedRoute>
+      <ActualReviewSection />
+    </ProtectedRoute>
+  } />
+
 
 
 <Route path='/Reviews' element={<AllReviews/>}></Route>

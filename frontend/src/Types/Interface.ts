@@ -75,9 +75,16 @@ export interface AuthSideBarProps {
     variant?: "signup" | "signin";
   }
 
+
+  export interface PopulatedUser {
+    _id: string;
+    name?: string;
+    username?: string;
+    email?: string;
+  }
   export interface ReviewProps {
     _id: string;
-    user: string;
+    user: string | PopulatedUser;
     review: string;
     reviewedAt: string;
   }

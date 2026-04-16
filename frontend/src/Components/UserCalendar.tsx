@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { UserStat } from "../Utils/Interface";
+import type { UserStat } from "../Types/Interface";
 
 interface UserCalendarProps {
   habits: UserStat[];  
