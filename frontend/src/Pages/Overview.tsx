@@ -6,6 +6,7 @@ function Overview (){
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [user, setUser] = useState<User | null>(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
 
@@ -43,7 +44,10 @@ function Overview (){
         <div>
 
       
-        <Sidebar/>
+        <Sidebar
+  isOpen={isSidebarOpen}
+  onClose={() => setIsSidebarOpen(false)}
+/>
         <div>
 
 
