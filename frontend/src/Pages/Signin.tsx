@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import AuthSideBar from "../Components/AuthSideBar";
+import { API_BASE_URL } from "../Config/API";
 
 function Signin() {
   const [email, setEmail] = useState<string>('');
@@ -14,7 +15,7 @@ function Signin() {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/api/users/sign-in`, {
+      const res = await fetch(`${API_BASE_URL}/api/users/sign-in`, {
         method: "POST",
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({ email, password }),
