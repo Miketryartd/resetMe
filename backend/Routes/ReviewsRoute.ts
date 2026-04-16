@@ -5,7 +5,7 @@ import { createReview, getReviews, getAllReviews } from '../Controllers/ReviewCo
 const router = express.Router();
 
 router.post('/review', verifyToken, createReview);
-router.get('/reviews', getReviews);
-router.get('/allReviews', getAllReviews);
+router.get('/reviews', verifyToken, getReviews);
+router.get('/allReviews', verifyToken, getAllReviews);
 
 export default router;
