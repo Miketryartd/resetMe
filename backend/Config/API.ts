@@ -2,7 +2,7 @@
 const getApiUrl = () => {
     
     if (process.env.NODE_ENV === 'production') {
-      return process.env.APP_API_URL || 'https://your-app-name.vercel.app/api';
+      return process.env.APP_API_URL || 'https://resetme.onrender.com/';
     }
     
    
