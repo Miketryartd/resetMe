@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import type { Review } from "../Types/Interface";
 import { Link } from "react-router";
+import { API_BASE_URL } from "../Config/API";
 
 function Reviews() {
 
@@ -10,7 +11,7 @@ function Reviews() {
         const fetchReviews = async () => {
             try {
                 const token = sessionStorage.getItem("token");
-                const url = `http://localhost:3000/api/user/me/reviews?limit=8`;
+                const url = `${API_BASE_URL}/api/user/me/reviews?limit=8`;
                 const headers: HeadersInit = token
                     ? { Authorization: `Bearer ${token}` }
                     : {};

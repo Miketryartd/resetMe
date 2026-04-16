@@ -3,6 +3,7 @@ import Sidebar from "../Components/Sidebar";
 import logo from "../images/logg.png";
 import type { Stats, UserPrompt } from "../Types/Interface";
 import AIFetch from "../Components/AIFetch";
+import { API_BASE_URL } from "../Config/API";
 
 function AIDashboard() {
   const [insight, setInsight] = useState<string | null>(null);
@@ -21,7 +22,7 @@ function AIDashboard() {
     try {
       const token = sessionStorage.getItem("token");
       if (!token) { alert("User is not logged in"); setLoading(false); return; }
-      const res = await fetch(`http://localhost:3000/api/user/me/get/ai/insight`, {
+      const res = await fetch(`${API_BASE_URL}/api/user/me/get/ai/insight`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ prompt })
@@ -51,7 +52,7 @@ function AIDashboard() {
         return;
       }
 
-      const response = await fetch(`http://localhost:3000/api/user/me/get/ai/prompt/${promptId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/user/me/get/ai/prompt/${promptId}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,

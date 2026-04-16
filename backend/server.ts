@@ -6,7 +6,9 @@ import userRoutes from './Routes/UserRoute.js';
 import habitRoutes from './Routes/HabitsRoute.js';
 import reviewRoutes from './Routes/ReviewsRoute.js';
 import aiRoutes from './Routes/AIRoute.js';
-import {API_BASE_URL} from "../backend/Config/API.js";
+
+
+
 
 const app = express();
 app.use(express.json());
@@ -23,8 +25,12 @@ app.use('/api/user', habitRoutes);
 app.use('/api/user/me', reviewRoutes);
 app.use('/api/user/me/get', aiRoutes);
 
-app.listen(3000, async () => {
-    console.log('Server is running');
+
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, async () => {
+    console.log(`Server is running on port ${PORT}`);
     try {
         await mongoose.connect(mongoose_secretkey);
         console.log('MongoDB connected');

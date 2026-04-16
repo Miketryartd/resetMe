@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import type { User } from "../Types/Interface";
+import { API_BASE_URL } from "../Config/API";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -17,7 +18,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
       try {
         const token = sessionStorage.getItem("token");
         if (!token) return alert("User is not logged in.");
-        const res = await fetch(`http://localhost:3000/api/users/user/me`, {
+        const res = await fetch(`${API_BASE_URL}/api/users/user/me`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` }
         });

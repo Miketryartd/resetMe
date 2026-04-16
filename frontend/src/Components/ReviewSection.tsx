@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { API_BASE_URL } from "../Config/API";
 
 function ReviewSection() {
 
@@ -22,7 +23,7 @@ function ReviewSection() {
                 return;
             }
 
-            const url = `http://localhost:3000/api/user/me/review`;
+            const url = `${API_BASE_URL}/api/user/me/review`;
             const res = await fetch(url, {
                 method: "POST",
                 headers: {

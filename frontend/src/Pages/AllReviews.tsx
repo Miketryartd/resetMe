@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import logo from "../images/logg.png";
 import type { ReviewProps } from "../Types/Interface";
+import { API_BASE_URL } from "../Config/API";
 
 function formatDate(dateStr: string) {
   if (!dateStr) return "—";
@@ -44,7 +45,7 @@ function AllReviews() {
     const fetchReviews = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:3000/api/user/me/allReviews`, {
+        const res = await fetch(`${API_BASE_URL}/api/user/me/allReviews`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });

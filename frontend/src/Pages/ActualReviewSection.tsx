@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Sidebar from "../Components/Sidebar";
 import logo from "../images/logg.png";
+import { API_BASE_URL } from "../Config/API";
 
 function ActualReviewSection() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -34,7 +35,7 @@ function ActualReviewSection() {
         review: review
       };
       
-      const url = `http://localhost:3000/api/user/me/review`;
+      const url = `${API_BASE_URL}/api/user/me/review`;
       const res = await fetch(url, {
         method: "POST",
         headers: {

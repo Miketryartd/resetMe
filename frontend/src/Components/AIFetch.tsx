@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { UserPrompt, Stats } from "../Types/Interface";
 import logo from "../images/logo.png";
+import { API_BASE_URL } from "../Config/API";
 
 interface AIFetchProps {
     onClose?: () => void;
@@ -22,7 +23,7 @@ function AIFetch({ onClose, onSelectPrompt, selectedPromptId }: AIFetchProps) {
             setLoading(true);
             const token = sessionStorage.getItem("token");
             if (!token) { alert("User not logged in"); setLoading(false); return; }
-            const res = await fetch(`http://localhost:3000/api/user/me/get/ai/history`, {
+            const res = await fetch(`${API_BASE_URL}/api/user/me/get/ai/history`, {
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
             });

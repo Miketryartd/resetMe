@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../Components/Sidebar";
 import type {User} from "../Types/Interface";
+import { API_BASE_URL } from "../Config/API";
 function Overview (){
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -12,7 +13,7 @@ function Overview (){
 
             try{
 
-                const url = `http://localhost:3000/api/users/user/me`;
+                const url = `${API_BASE_URL}/api/users/user/me`;
                 const token = sessionStorage.getItem("token");
                 if (!token){
                  return alert("User not logged in");
