@@ -187,8 +187,7 @@ function HomePage() {
                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold mb-2">E</div>
                 <div className="bg-white/20 rounded-lg px-3 py-2 text-white text-xs font-semibold">Overview</div>
                 <div className="px-3 py-2 text-white/60 text-xs font-medium">AI Insights</div>
-                <div className="px-3 py-2 text-white/60 text-xs font-medium">Calendar</div>
-                <div className="px-3 py-2 text-white/60 text-xs font-medium">Statistics</div>
+
                 <div className="mt-auto px-3 py-2 text-white/60 text-xs font-medium">Logout</div>
               </div>
               <div className="flex-1 p-4 flex flex-col gap-3">
@@ -233,10 +232,10 @@ function HomePage() {
             <span className="text-base">📉</span> Lower Cortisol Levels
           </div>
           <div className="hidden sm:flex absolute -right-6 bottom-[20%] bg-white rounded-2xl px-4 py-2.5 shadow-lg items-center gap-2 text-sm font-semibold text-blue-500 whitespace-nowrap border border-blue-100">
-            <span className="text-base">🤖</span> New AI insight ready
+            <span className="text-base"><img className="object-cover h-10 w-10"src={logo}></img></span> New AI insight ready
           </div>
           <div className="hidden md:flex absolute -right-4 top-[20%] bg-white rounded-2xl px-4 py-2.5 shadow-lg items-center gap-2 text-sm font-semibold text-orange-500 whitespace-nowrap border border-orange-100">
-            <span className="text-base">🔥</span> 14-day streak!
+            <span className="text-base"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="icon icon-tabler icons-tabler-filled icon-tabler-flame"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 2c0 -.88 1.056 -1.331 1.692 -.722c1.958 1.876 3.096 5.995 1.75 9.12l-.08 .174l.012 .003c.625 .133 1.203 -.43 2.303 -2.173l.14 -.224a1 1 0 0 1 1.582 -.153c1.334 1.435 2.601 4.377 2.601 6.27c0 4.265 -3.591 7.705 -8 7.705s-8 -3.44 -8 -7.706c0 -2.252 1.022 -4.716 2.632 -6.301l.605 -.589c.241 -.236 .434 -.43 .618 -.624c1.43 -1.512 2.145 -2.924 2.145 -4.78" /></svg></span> 14-day streak!
           </div>
         </div>
       </section>
