@@ -1,8 +1,8 @@
 import { useState } from "react";
 import hero_img from "../images/Gemini_Generated_Image_ome79jome79jome7.png";
-import logo from "../images/52b18fba-4887-4d95-a3f4-aaa607f1dffd.jfif";
-import m from "../images/BrewSense.png";
-import e from "../images/ChatGPT Image Mar 14, 2026, 09_18_08 PM.png"
+import logo from "../images/img carousel 1.png";
+import m from "../images/ChatGPT Image Apr 18, 2026, 07_50_08 PM.png";
+import e from "../images/ChatGPT Image Apr 18, 2026, 08_00_33 PM.png"
 
 function ImageCarousel() {
     const imgArr = [logo, hero_img, m, e];
