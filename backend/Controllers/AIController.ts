@@ -17,7 +17,7 @@ const FREE_MODELS = [
 // Local fallback responses when all APIs fail
 const getLocalFallbackResponse = (prompt: string | null, stats: any) => {
     if (prompt && prompt.toLowerCase().includes('progress')) {
-        return `📊 **Your Progress Summary**
+        return ` **Your Progress Summary**
 
 Based on your habit data:
 - Total Habits: ${stats.totalHabits}
@@ -25,14 +25,14 @@ Based on your habit data:
 - Completed: ${stats.totalCompletions} days
 - Missed: ${stats.totalMisses} days
 
-${stats.bestHabit ? `🏆 Best Habit: ${stats.bestHabit.habit} (${stats.bestHabit.successRate}% success rate)` : ''}
-${stats.worstHabit ? `⚠️ Needs Improvement: ${stats.worstHabit.habit} (${stats.worstHabit.successRate}% success rate)` : ''}
+${stats.bestHabit ? ` Best Habit: ${stats.bestHabit.habit} (${stats.bestHabit.successRate}% success rate)` : ''}
+${stats.worstHabit ? ` Needs Improvement: ${stats.worstHabit.habit} (${stats.worstHabit.successRate}% success rate)` : ''}
 
-Keep going! Consistency is key to building lasting habits. 💪`;
+Keep going! Consistency is key to building lasting habits. `;
     }
     
     if (prompt && prompt.toLowerCase().includes('motivation')) {
-        return `🌟 **Stay Motivated!**
+        return ` **Stay Motivated!**
 
 You've completed ${stats.totalCompletions} habit days! Every small step counts toward your goals.
 
@@ -46,8 +46,8 @@ Average Success Rate: ${stats.averageSuccessRate}%
 Total Completions: ${stats.totalCompletions}
 Total Misses: ${stats.totalMisses}
 
-${stats.bestHabit ? `✅ Best performing: ${stats.bestHabit.habit}` : ''}
-${stats.worstHabit ? `🎯 Focus area: ${stats.worstHabit.habit}` : ''}
+${stats.bestHabit ? ` Best performing: ${stats.bestHabit.habit}` : ''}
+${stats.worstHabit ? ` Focus area: ${stats.worstHabit.habit}` : ''}
 
 The AI service is currently experiencing high demand. Here's your basic stats analysis. Check back soon for detailed insights! 🔄`;
 };
@@ -58,12 +58,13 @@ const callOpenRouter = async (model: string, messages: any[], timeout = 30000) =
     const timeoutId = setTimeout(() => controller.abort(), timeout);
     
     try {
+        const HOST = process.env.HOST || `http://localhost:3000`;
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${open_router_key}`,
                 "Content-Type": "application/json",
-                "HTTP-Referer": "http://localhost:3000",
+                "HTTP-Referer": HOST as string,
                 "X-Title": "Habit Tracker",
             },
             body: JSON.stringify({
@@ -94,6 +95,7 @@ const callOpenRouter = async (model: string, messages: any[], timeout = 30000) =
 
 export const getAi = async (req: Request, res: Response) => {
     try {
+        console.log("test terminal");
         const { prompt } = req.body;
         const id = (req as any).user.id;
 
