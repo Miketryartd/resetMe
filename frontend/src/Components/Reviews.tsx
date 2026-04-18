@@ -65,7 +65,7 @@ function Reviews() {
 
                             <div className="border-t border-white/10 pt-3 flex flex-col gap-1">
                                 <span className="text-black font-semibold text-sm truncate">
-                                    {rev.user?.email}
+                                    {rev.user?.username}
                                 </span>
                                 <span className="text-slate-400 text-xs">
                                     {new Date(rev.reviewedAt).toLocaleDateString("en-US", {
