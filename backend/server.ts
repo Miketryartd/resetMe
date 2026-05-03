@@ -6,7 +6,7 @@ import userRoutes from './Routes/UserRoute.js';
 import habitRoutes from './Routes/HabitsRoute.js';
 import reviewRoutes from './Routes/ReviewsRoute.js';
 import aiRoutes from './Routes/AIRoute.js';
-
+import PingRoute from "./Routes/PingRoute.js";
 
 
 
@@ -24,6 +24,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/user', habitRoutes);
 app.use('/api/user/me', reviewRoutes);
 app.use('/api/user/me/get', aiRoutes);
+app.use('/api/health', PingRoute);
 
 
 
